@@ -45,7 +45,6 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
     }
 
     public class UsuarioViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
         private TextView textViewNombreUsuario;
         private TextView textViewCorreo;
 

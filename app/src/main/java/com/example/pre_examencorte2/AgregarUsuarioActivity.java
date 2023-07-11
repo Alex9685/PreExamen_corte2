@@ -44,8 +44,7 @@ public class AgregarUsuarioActivity extends AppCompatActivity {
                     if (contraseña1.equals(contraseña2)) {
                         // Verificar formato de correo electrónico
                         if (validarCorreo(correo)) {
-                            byte[] foto = null; // Agrega aquí la lógica para obtener la foto del usuario si es necesario
-                            databaseManager.agregarUsuario(nombreUsuario, correo, contraseña1, foto);
+                            databaseManager.agregarUsuario(nombreUsuario, correo, contraseña1);
                             Toast.makeText(AgregarUsuarioActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
                             finish();
                         } else {

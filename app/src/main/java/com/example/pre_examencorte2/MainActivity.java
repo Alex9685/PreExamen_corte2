@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         if (!correo.isEmpty() && !contraseña.isEmpty()) {
             if (databaseManager.verificarUsuario(correo, contraseña)) {
                 Toast.makeText(MainActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-                // Aquí puedes agregar el código para redirigir a la actividad principal de la aplicación
+                Intent intent = new Intent(MainActivity.this, MostrarUsuariosActivity.class);
+                startActivity(intent);
             } else {
                 Toast.makeText(MainActivity.this, "El usuario no existe", Toast.LENGTH_SHORT).show();
             }
