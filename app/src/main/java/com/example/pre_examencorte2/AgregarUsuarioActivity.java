@@ -44,9 +44,13 @@ public class AgregarUsuarioActivity extends AppCompatActivity {
                     if (contraseña1.equals(contraseña2)) {
                         // Verificar formato de correo electrónico
                         if (validarCorreo(correo)) {
-                            databaseManager.agregarUsuario(nombreUsuario, correo, contraseña1);
-                            Toast.makeText(AgregarUsuarioActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
-                            finish();
+                            if (databaseManager.verificarUsuario2(correo)) {
+                                Toast.makeText(AgregarUsuarioActivity.this, "El usuario ya está registrado", Toast.LENGTH_SHORT).show();
+                            } else {
+                                databaseManager.agregarUsuario(nombreUsuario, correo, contraseña1);
+                                Toast.makeText(AgregarUsuarioActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
                         } else {
                             Toast.makeText(AgregarUsuarioActivity.this, "Formato de correo electrónico inválido", Toast.LENGTH_SHORT).show();
                         }
@@ -58,6 +62,7 @@ public class AgregarUsuarioActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private boolean validarCorreo(String correo) {
@@ -74,3 +79,4 @@ public class AgregarUsuarioActivity extends AppCompatActivity {
         return matcher.matches();
     }
 }
+
