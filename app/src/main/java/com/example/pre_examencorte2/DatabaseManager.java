@@ -50,65 +50,25 @@ public class DatabaseManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void eliminarUsuario(int idUsuario) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_USUARIO, COLUMN_ID + " = ?", new String[]{String.valueOf(idUsuario)});
-        db.close();
-    }
 
-    public Usuario obtenerUsuarioPorId(int usuarioId) {
+    public boolean verificarUsuario2(String correo) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(
-                TABLE_USUARIO,
-                new String[]{COLUMN_ID, COLUMN_NOMBRE_USUARIO, COLUMN_CORREO, COLUMN_CONTRASEÑA},
-                COLUMN_ID + "=?",
-                new String[]{String.valueOf(usuarioId)},
-                null,
-                null,
-                null
-        );
 
-        Usuario usuario = null;
-        if (cursor != null && cursor.moveToFirst()) {
-            int columnIndexId = cursor.getColumnIndex(COLUMN_ID);
-            int columnIndexNombreUsuario = cursor.getColumnIndex(COLUMN_NOMBRE_USUARIO);
-            int columnIndexCorreo = cursor.getColumnIndex(COLUMN_CORREO);
-            int columnIndexContraseña = cursor.getColumnIndex(COLUMN_CONTRASEÑA);
+        String query = "SELECT * FROM " + TABLE_USUARIO + " WHERE " +
+                COLUMN_CORREO + " = ?";
 
-            if (columnIndexId != -1 && columnIndexNombreUsuario != -1 && columnIndexCorreo != -1
-                    && columnIndexContraseña != -1 ) {
-                usuario = new Usuario(
-                        cursor.getInt(columnIndexId),
-                        cursor.getString(columnIndexNombreUsuario),
-                        cursor.getString(columnIndexCorreo),
-                        cursor.getString(columnIndexContraseña)
+        Cursor cursor = db.rawQuery(query, new String[]{correo});
 
-                );
-            }
+        boolean usuarioExiste = cursor.getCount() > 0;
 
-            cursor.close();
-        }
-
-        return usuario;
-    }
-
-    public void actualizarUsuario(Usuario usuario) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NOMBRE_USUARIO, usuario.getNombreUsuario());
-        values.put(COLUMN_CORREO, usuario.getCorreo());
-        values.put(COLUMN_CONTRASEÑA, usuario.getContraseña());
-
-        db.update(
-                TABLE_USUARIO,
-                values,
-                COLUMN_ID + "=?",
-                new String[]{String.valueOf(usuario.getId())}
-        );
-
+        cursor.close();
         db.close();
+
+        return usuarioExiste;
     }
+
+
+
     public boolean verificarUsuario(String correo, String contraseña) {
         SQLiteDatabase db = this.getReadableDatabase();
 
